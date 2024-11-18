@@ -1,18 +1,61 @@
 package org.example;
 
-//TIP コードを<b>実行</b>するには、<shortcut actionId="Run"/> を押すか
-// ガターの <icon src="AllIcons.Actions.Execute"/> アイコンをクリックします。
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
 public class Main {
 
   public static void main(String[] args) {
-    //TIP ハイライトされたテキストにキャレットがある状態で <shortcut actionId="ShowIntentionActions"/> を押すと
-    // IntelliJ IDEA によるその修正案を確認できます。
-    System.out.printf("Hello and welcome!");
+    Scanner scanner = new Scanner(System.in);
 
-    for (int i = 1; i <= 5; i++) {
-      //TIP <shortcut actionId="Debug"/> を押してコードのデバッグを開始します。<icon src="AllIcons.Debugger.Db_set_breakpoint"/> ブレークポイントを 1 つ設定しましたが、
-      // <shortcut actionId="ToggleLineBreakpoint"/> を押すといつでも他のブレークポイントを追加できます。
-      System.out.println("i = " + i);
+    int number1;
+    String operator;
+    int number2;
+
+    boolean isInputValid = false;
+    while (!isInputValid) {
+      try {
+        System.out.print("1番目の数字を入力してください: ");
+        number1 = scanner.nextInt();
+
+        System.out.print("演算子を入力してください (+, -, *, /): ");
+        operator = scanner.next();
+
+        System.out.print("2番目の数字を入力してください: ");
+        number2 = scanner.nextInt();
+
+//        正常な入力の場合はループを抜ける
+        isInputValid = true;
+
+        int result = 0;
+        boolean isCalculated = true; // 正常に計算されるかをチェック
+
+        switch (operator) {
+          case "+" -> result = number1 + number2;
+          case "-" -> result = number1 - number2;
+          case "*" -> result = number1 * number2;
+          case "/" -> {
+            if (number2 != 0) {
+              result = number1 / number2;
+            } else {
+              System.out.println("0で割ることはできません");
+              isCalculated = false;
+            }
+          }
+          default -> isCalculated = false;
+        }
+
+        if (isCalculated) {
+          System.out.println(" 計算結果: " + number1 + operator + number2 + "=" + result);
+        } else {
+          System.out.println("もう一度やり直してください");
+          isInputValid = false;
+        }
+
+      } catch (InputMismatchException e) {
+        System.out.println("不正な入力です");
+        scanner.next();
+      }
     }
   }
 }
